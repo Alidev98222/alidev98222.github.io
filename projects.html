@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Projects — AliDev98.</title>
+  <meta name="description" content="A selection of projects built and designed by AliDev98 — web development, bots, AI tools and automation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== Tokens ===== */
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --line: rgba(255, 255, 255, 0.08);
+      --crimson: #a6192e;
+      --crimson-bright: #e5385c;
+      --crimson-border: rgba(166, 25, 46, 0.32);
+      --crimson-glow: rgba(166, 25, 46, 0.40);
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+      --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      --container: 1120px;
+      --nav-h: 76px;
+      --r-card: 20px;
+      --r-pill: 999px;
+      --sp-4: 16px;
+      --sp-6: 24px;
+      --sp-8: 32px;
+      --sp-12: 48px;
+      --sp-16: 64px;
+      --sp-24: 96px;
+      --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    /* ===== Base ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    ul { list-style: none; }
+    ::selection { background: rgba(166, 25, 46, 0.55); color: #fff; }
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--crimson-bright);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* Ambient crimson atmosphere */
+    .ambience {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(640px 420px at 12% -8%, rgba(166, 25, 46, 0.16), transparent 65%),
+        radial-gradient(720px 480px at 88% 112%, rgba(166, 25, 46, 0.12), transparent 65%);
+    }
+    .nav, main, footer { position: relative; z-index: 1; }
+
+    /* ===== Navigation ===== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: rgba(10, 10, 10, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
+    }
+    .nav.scrolled { background: rgba(10, 10, 10, 0.86); border-bottom-color: var(--line); }
+    .nav-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      height: var(--nav-h);
+      padding: 0 var(--sp-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+    .logo .dot { color: var(--crimson-bright); }
+    .nav-menu { display: flex; align-items: center; gap: 36px; }
+    .nav-menu a {
+      position: relative;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 0;
+      transition: color 0.3s var(--ease);
+    }
+    .nav-menu a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      height: 2px;
+      background: var(--crimson-bright);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s var(--ease);
+    }
+    .nav-menu a:hover { color: var(--text); }
+    .nav-menu a:hover::after,
+    .nav-menu a.active::after { transform: scaleX(1); }
+    .nav-menu a.active { color: var(--text); }
+
+    /* Hamburger */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      padding: 0;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      margin: 0 auto;
+      background: var(--text);
+      transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ===== Hero ===== */
+    .hero {
+      text-align: center;
+      padding: calc(var(--nav-h) + 96px) var(--sp-6) var(--sp-16);
+    }
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--crimson-bright);
+      margin-bottom: var(--sp-6);
+    }
+    .headline {
+      font-size: clamp(2.75rem, 7vw, 4.5rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      margin-bottom: var(--sp-8);
+    }
+    .headline .hl {
+      text-decoration: underline;
+      text-decoration-color: var(--crimson);
+      text-decoration-thickness: 4px;
+      text-underline-offset: 14px;
+    }
+    .lede {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ===== Projects Grid ===== */
+    .projects { padding: 0 var(--sp-6) var(--sp-8); }
+    .container { max-width: var(--container); margin: 0 auto; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px 28px;
+    }
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--crimson-border);
+      border-radius: var(--r-card);
+      padding: 48px 32px 32px;
+      transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(229, 56, 92, 0.55);
+      box-shadow:
+        0 0 0 1px rgba(229, 56, 92, 0.18),
+        0 18px 50px -18px var(--crimson-glow),
+        0 0 60px -12px rgba(166, 25, 46, 0.30);
+    }
+    .badge {
+      position: absolute;
+      top: -14px;
+      left: 24px;
+      background: var(--crimson);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      padding: 6px 14px;
+      border-radius: var(--r-pill);
+      box-shadow: 0 8px 24px rgba(166, 25, 46, 0.45);
+    }
+    .card h2 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+    .card p { color: var(--muted); font-size: 15px; }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: var(--sp-6);
+    }
+    .tags li {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--line);
+      padding: 6px 14px;
+      border-radius: var(--r-pill);
+    }
+    .card .btn { margin-top: var(--sp-8); align-self: flex-start; }
+
+    /* ===== Buttons ===== */
+    .btn {
+      display: inline-block;
+      background: var(--crimson);
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      text-decoration: none;
+      border: 0;
+      padding: 14px 28px;
+      border-radius: var(--r-pill);
+      cursor: pointer;
+      transition: background 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    }
+    .btn:hover {
+      background: var(--crimson-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px -10px var(--crimson-glow);
+    }
+    .btn:active { transform: translateY(0); }
+    .btn-lg { padding: 17px 42px; font-size: 15px; }
+
+    /* ===== CTA ===== */
+    .cta {
+      text-align: center;
+      padding: var(--sp-24) var(--sp-6) var(--sp-16);
+    }
+    .cta h2 {
+      font-size: clamp(1.75rem, 4.5vw, 2.6rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: var(--sp-8);
+    }
+
+    /* ===== Footer ===== */
+    .footer { padding: 0 var(--sp-6) var(--sp-12); }
+    .footer-divider {
+      height: 1px;
+      max-width: var(--container);
+      margin: 0 auto var(--sp-8);
+      background: linear-gradient(90deg, transparent, var(--crimson) 50%, transparent);
+    }
+    .footer p {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ===== Reveal Animations ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+      transition-delay: var(--d, 0s);
+    }
+    .reveal.in-view { opacity: 1; transform: none; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+    @media (max-width: 760px) {
+      .nav-toggle { display: flex; }
+      .nav-menu {
+        position: fixed;
+        top: var(--nav-h);
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        background: rgba(10, 10, 10, 0.97);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--line);
+        padding: var(--sp-4) var(--sp-6) var(--sp-6);
+        transform: translateY(-12px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), visibility 0s linear 0.3s;
+      }
+      .nav-menu.open {
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0s;
+      }
+      .nav-menu a {
+        display: block;
+        font-size: 16px;
+        padding: 15px 2px;
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-menu li:last-child a { border-bottom: 0; }
+      .nav-menu a::after { bottom: 8px; right: auto; width: 32px; }
+      .hero { padding-top: calc(var(--nav-h) + 64px); }
+      .headline .hl { text-underline-offset: 10px; }
+      .card { padding: 44px 24px 28px; }
+    }
+
+    /* ===== Reduced Motion ===== */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { transition: none; opacity: 1; transform: none; }
+      .nav, .nav-menu, .nav-toggle span, .btn, .card { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambience" aria-hidden="true"></div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <header class="nav">
+    <nav class="nav-inner" aria-label="Main navigation">
+      <a class="logo" href="index.html">AliDev98<span class="dot">.</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a class="active" href="projects.html" aria-current="page">Projects</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <p class="eyebrow reveal">Portfolio</p>
+      <h1 class="headline reveal" style="--d: .12s"><span class="hl">My Recent Work</span></h1>
+      <p class="lede reveal" style="--d: .24s">A selection of projects I have built and designed.</p>
+    </section>
+
+    <!-- ===== PROJECTS GRID ===== -->
+    <section class="projects" aria-label="Projects">
+      <div class="container">
+        <div class="grid">
+          <article class="card reveal" style="--d: .05s">
+            <span class="badge">01</span>
+            <h2>Personal Portfolio</h2>
+            <p>A responsive, dark-themed portfolio built with HTML, CSS, and JavaScript.</p>
+            <ul class="tags">
+              <li>HTML</li><li>CSS</li><li>JS</li>
+            </ul>
+            <a class="btn" href="#">View Project</a>
+          </article>
+
+          <article class="card reveal" style="--d: .15s">
+            <span class="badge">02</span>
+            <h2>Telegram Bot</h2>
+            <p>A custom Python bot for automating tasks and answering user queries.</p>
+            <ul class="tags">
+              <li>Python</li><li>API</li>
+            </ul>
+            <a class="btn" href="#">View Project</a>
+          </article>
+
+          <article class="card reveal" style="--d: .25s">
+            <span class="badge">03</span>
+            <h2>AI Image Generator</h2>
+            <p>A web tool that generates high-quality images using AI models.</p>
+            <ul class="tags">
+              <li>AI</li><li>Web</li>
+            </ul>
+            <a class="btn" href="#">View Project</a>
+          </article>
+
+          <article class="card reveal" style="--d: .35s">
+            <span class="badge">04</span>
+            <h2>Automation Script</h2>
+            <p>A Python script that automates repetitive web tasks and data entry.</p>
+            <ul class="tags">
+              <li>Python</li><li>Automation</li>
+            </ul>
+            <a class="btn" href="#">View Project</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta">
+      <h2 class="reveal">Want to see more or work together?</h2>
+      <a class="btn btn-lg reveal" style="--d: .15s" href="mailto:your-email@example.com">Get in Touch</a>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-divider" aria-hidden="true"></div>
+    <p>© 2026 AliDev98. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      /* Nav: scrolled state */
+      const nav = document.querySelector('.nav');
+      const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 10);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      /* Mobile menu toggle */
+      const toggle = document.querySelector('.nav-toggle');
+      const menu = document.getElementById('nav-menu');
+      const closeMenu = () => {
+        menu.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      };
+      toggle.addEventListener('click', () => {
+        const open = menu.classList.toggle('open');
+        toggle.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      menu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('open')) {
+          closeMenu();
+          toggle.focus();
+        }
+      });
+
+      /* Placeholder project links */
+      document.querySelectorAll('a[href="#"]').forEach(link => {
+        link.addEventListener('click', e => e.preventDefault());
+      });
+
+      /* Staggered reveal on load / scroll */
+      const items = document.querySelectorAll('.reveal');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced || !('IntersectionObserver' in window)) {
+        items.forEach(item => item.classList.add('in-view'));
+      } else {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        items.forEach(item => io.observe(item));
+      }
+    });
+  </script>
+</body>
+</html>
