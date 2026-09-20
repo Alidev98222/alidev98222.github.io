@@ -1,55 +1,644 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="description" content="About AliDev98 — a web developer passionate about building high-quality, fast and accessible websites."> <meta name="theme-color" content="#0a0a0a"> <title>About — AliDev98</title> <!-- Same inline SVG favicon as the home page: the crimson ember mark --> <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230a0a0a'/%3E%3Ccircle cx='8' cy='8' r='4' fill='%23d21f3c'/%3E%3C/svg%3E"> <!-- Inter — the only external resource (a font, not a library). Same face and weights as index.html so both pages read as one system. --> <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"> <style> /* ============================================================ 1. DESIGN TOKENS — identical to index.html Concept: "An ember on obsidian" — absolute black, one crimson glow. ============================================================ */ :root { /* Surfaces */ --bg: #0a0a0a; --bg-elevated: #111113; --line: rgba(255, 255, 255, 0.08); /* Ink */ --text: #f4f4f2; --text-muted: #a3a3a3; --text-dim: #6f6f6f; /* The one accent — crimson, rationed to a single job */ --crimson: #d21f3c; /* action / focus */ --crimson-deep: #8b0000; /* glows, selection */ --crimson-dark: #5c0a14; /* pressed states */ /* Type */ --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.125rem; /* Spacing scale */ --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 96px; --space-10: 128px; /* Radius signature: sharp surfaces, pill buttons only */ --radius-sharp: 0; --radius-pill: 999px; /* The one deliberate glow (CTA hover only) */ --glow: 0 0 28px rgba(210, 31, 60, 0.28); /* Motion */ --ease-out: cubic-bezier(0.22, 1, 0.36, 1); --speed: 0.3s; } /* ============================================================ 2. RESET & BASE — same as index.html ============================================================ */ *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-padding-top: 96px; /* anchored sections clear of the fixed header */ } body { font-family: var(--font-sans); font-size: var(--text-md); line-height: 1.7; color: var(--text); background-color: var(--bg); /* Ultra-faint dot grid — same quiet texture as the home page */ background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1.5px); background-size: 32px 32px; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; } ::selection { background: var(--crimson-deep); color: #ffffff; } img, svg { display: block; max-width: 100%; } /* Visible keyboard focus, everywhere */ :focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; border-radius: 2px; } /* Skip link — visible only when focused */ .skip-link { position: absolute; top: -48px; left: 16px; z-index: 100; padding: var(--space-2) var(--space-4); background: var(--crimson-deep); color: #ffffff; font-size: var(--text-sm); text-decoration: none; transition: top var(--speed) var(--ease-out); } .skip-link:focus { top: 12px; } /* ============================================================ 3. UTILITIES ============================================================ */ .container { width: min(100% - 40px, 1100px); margin-inline: auto; } .eyebrow { font-size: var(--text-sm); font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted); } /* ============================================================ 4. HEADER — same shell as index.html, plus an active state ============================================================ */ .site-header { position: fixed; inset-inline: 0; top: 0; z-index: 50; background: rgba(10, 10, 10, 0.72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); } .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; } .logo { font-size: var(--text-lg); font-weight: 700; letter-spacing: -0.02em; color: var(--text); text-decoration: none; } /* The crimson full-stop — same brand mark as the home page */ .logo-dot { color: var(--crimson); } .nav-links { display: flex; align-items: center; gap: var(--space-5); } .nav-link { position: relative; font-size: var(--text-sm); font-weight: 500; color: var(--text-muted); text-decoration: none; transition: color var(--speed) var(--ease-out); } .nav-link:hover { color: var(--text); } /* Current page: white text + a short crimson underline */ .nav-link[aria-current="page"] { color: var(--text); } .nav-link[aria-current="page"]::after { content: ""; position: absolute; inset-inline: 0; bottom: -6px; height: 2px; background: var(--crimson); } /* ============================================================ 5. PAGE HERO — "Behind the Keyboard" A shorter band than the home hero: same ember glow, quieter scale. ============================================================ */ .page-hero { position: relative; min-height: 78vh; /* fallback */ min-height: 78svh; /* small-viewport height on mobile */ display: grid; place-items: center; overflow: hidden; text-align: center; padding-block: 120px 96px; } /* The ember: same layered radial gradients as the home page */ .hero-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 62% 48% at 50% 44%, rgba(139, 0, 0, 0.30), transparent 70%), radial-gradient(ellipse 30% 22% at 50% 46%, rgba(210, 31, 60, 0.10), transparent 70%); } .page-hero-inner { position: relative; /* above the glow */ display: flex; flex-direction: column; align-items: center; gap: var(--space-5); } .page-title { font-size: clamp(2.5rem, 6.5vw, 4.25rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; max-width: 14ch; } /* Blinking terminal caret — the developer's signature */ .caret { display: inline-block; width: 0.45ch; height: 0.78em; margin-left: 0.12em; background: var(--crimson); transform: translateY(0.06em); } .bio-lead { max-width: 34rem; font-size: var(--text-lg); color: var(--text-muted); } .bio-support { max-width: 36rem; font-size: var(--text-md); color: var(--text-dim); } /* ============================================================ 6. BUTTON — same ghost-to-crimson as index.html ============================================================ */ .btn { display: inline-flex; align-items: center; gap: var(--space-2); margin-top: var(--space-2); padding: 0.9rem 2rem; border: 1px solid rgba(255, 255, 255, 0.18); border-radius: var(--radius-pill); font-size: 0.95rem; font-weight: 500; letter-spacing: 0.01em; color: var(--text); text-decoration: none; transition: background-color var(--speed) var(--ease-out), border-color var(--speed) var(--ease-out), transform var(--speed) var(--ease-out), box-shadow var(--speed) var(--ease-out); } .btn:hover, .btn:focus-visible { background: var(--crimson); border-color: var(--crimson); color: #ffffff; transform: translateY(-2px); box-shadow: var(--glow); } .btn:active { background: var(--crimson-dark); border-color: var(--crimson-dark); transform: translateY(0); box-shadow: none; } /* ============================================================ 7. WHAT I CARE ABOUT — hairline list with crimson dash bullets ============================================================ */ .care { padding-block: clamp(80px, 12vw, 128px); } .care-inner { max-width: 720px; margin-inline: auto; display: flex; flex-direction: column; gap: var(--space-5); } .care-title { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; } .care-intro { color: var(--text-muted); margin-top: calc(var(--space-2) * -1); } /* Bulleted list — crimson dashes instead of default discs */ .care-list { list-style: none; margin-top: var(--space-2); display: grid; grid-template-columns: 1fr; } .care-list li { position: relative; padding-block: var(--space-4); padding-inline-start: 26px; border-top: 1px solid var(--line); font-weight: 500; color: var(--text); } .care-list li::before { content: ""; position: absolute; inset-inline-start: 0; top: 1.05em; width: 14px; height: 2px; background: var(--crimson); } /* ============================================================ 8. FOOTER — identical to index.html ============================================================ */ .footer { border-top: 1px solid var(--line); padding-block: var(--space-6); } .footer-inner { display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--text-sm); color: var(--text-dim); } .footer-inner .built { color: var(--text-dim); } /* ============================================================ 9. MOTION — pure CSS only (no JavaScript on this page), every animation gated behind reduced-motion. ============================================================ */ @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } /* Staggered fade-in on page load (hero) */ .fade-up { opacity: 0; transform: translateY(18px); animation: fade-up 0.8s var(--ease-out) forwards; animation-delay: var(--d, 0s); } @keyframes fade-up { to { opacity: 1; transform: translateY(0); } } /* The ember breathes */ .hero-glow { transform-origin: center; animation: breathe 9s ease-in-out infinite alternate; } @keyframes breathe { from { opacity: 0.72; transform: scale(1); } to { opacity: 1; transform: scale(1.05); } } /* Terminal caret blink */ .caret { animation: blink 1.1s step-end infinite; } @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } } /* Scroll-reveal for the care section — pure CSS scroll-driven animation, only in browsers that support it. Elsewhere the section simply stays visible, so nothing is ever hidden. */ @supports (animation-timeline: view()) { .care-inner { animation: rise-in linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; } @keyframes rise-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } } } /* ============================================================ 10. RESPONSIVE — mobile-first adjustments ============================================================ */ @media (min-width: 640px) { .care-list { grid-template-columns: repeat(2, 1fr); column-gap: var(--space-7); } .footer-inner { flex-direction: row; justify-content: space-between; align-items: center; } } @media (min-width: 900px) { .container { width: min(100% - 64px, 1100px); } } </style> </head> <body> <!-- Accessible skip link -->
-<a class="skip-link" href="#main">Skip to content</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About AliDev98 — a web developer passionate about clean code, responsive layouts, performance and accessibility.">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>About — AliDev98.</title>
 
-<!-- ====== HEADER ====== --> <header class="site-header"> <nav class="container nav" aria-label="Primary"> <a class="logo" href="index.html">AliDev98<span class="logo-dot">.</span></a> <div class="nav-links"> <a class="nav-link" href="index.html">Home</a> <a class="nav-link" href="about.html" aria-current="page">About</a> <a class="nav-link" href="projects.html">Projects</a> </div> </nav> </header> <main id="main">
-php
-Copy
-<!-- ====== PAGE HERO — BEHIND THE KEYBOARD ====== -->
-<section class="page-hero" id="top">
-  <div class="hero-glow" aria-hidden="true"></div>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <div class="container page-hero-inner">
-    <p class="eyebrow fade-up" style="--d: 0.05s">About Me</p>
+  <style>
+    /* ====== TOKENS & BASE ====== */
+    :root{
+      --bg:            #0a0a0a;
+      --crimson-deep:  #6B0F1A;
+      --crimson:       #8f1626;
+      --crimson-lit:   #d4607a;   /* readable crimson for text & accents on black */
+      --gold:          #B8860B;   /* reserved: button hover / active only */
+      --gold-lit:      #d9a94e;   /* focus ring */
+      --ink:           #f4efe9;
+      --ink-muted:     #a89f97;
+      --hairline:      rgba(244,239,233,.09);
+      --frost:         rgba(12,10,11,.72);
+      --card:          #111111;
 
-    <h1 class="page-title fade-up" style="--d: 0.15s">
-      Behind the Keyboard<span class="caret" aria-hidden="true"></span>
-    </h1>
+      --radius-panel:  18px;
+      --radius-pill:   999px;
 
-    <p class="bio-lead fade-up" style="--d: 0.25s">
-      I am a web developer passionate about building high-quality websites.
-    </p>
+      --nav-h:         72px;
+      --ease:          cubic-bezier(.22,.61,.21,1);
+      --dur:           .3s;
+    }
 
-    <p class="bio-support fade-up" style="--d: 0.32s">
-      I write clean, maintainable code and design interfaces that stay out of
-      the user&rsquo;s way &mdash; and I care about the quiet details that turn
-      a good site into a great one.
-    </p>
+    *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
 
-    <a class="btn fade-up" style="--d: 0.4s" href="#care">
-      What I care about <span aria-hidden="true">&darr;</span>
-    </a>
-  </div>
-</section>
+    html{ scroll-behavior:smooth; }
 
-<!-- ====== WHAT I CARE ABOUT ====== -->
-<section class="care" id="care">
-  <div class="container care-inner">
+    body{
+      font-family:'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      overflow-x:hidden;
+      min-height:100svh;
+      display:flex;
+      flex-direction:column;
+    }
 
-    <p class="eyebrow">Principles</p>
+    ::selection{ background:rgba(107,15,26,.9); color:var(--ink); }
 
-    <h2 class="care-title">What I Care About</h2>
+    a{ color:inherit; }
+    ul{ list-style:none; }
 
-    <p class="care-intro">
-      Four things I refuse to compromise on, on every project I touch.
-    </p>
+    a:focus-visible,
+    button:focus-visible{
+      outline:2px solid var(--gold-lit);
+      outline-offset:4px;
+      border-radius:var(--radius-pill);
+    }
 
-    <ul class="care-list">
-      <li>Responsive layouts</li>
-      <li>Clean code</li>
-      <li>Performance</li>
-      <li>Accessibility</li>
-    </ul>
+    /* Velvet film grain over the whole page */
+    .grain{
+      position:fixed; inset:0;
+      z-index:200;
+      pointer-events:none;
+      opacity:.05;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    }
 
-  </div>
-</section>
-</main> <!-- ====== FOOTER ====== --> <footer class="footer"> <div class="container footer-inner"> <p>&copy; 2026 AliDev98. All rights reserved.</p> <p class="built">Built with vanilla HTML, CSS &amp; JavaScript.</p> </div> </footer> </body> </html>
+    /* ====== NAVIGATION ====== */
+    .site-header{
+      position:fixed;
+      inset:0 0 auto 0;
+      z-index:100;
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      height:var(--nav-h);
+      padding:0 clamp(1.25rem, 5vw, 3.5rem);
+      border-bottom:1px solid transparent;
+      transition:background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+
+    .site-header.is-scrolled .nav{
+      background:var(--frost);
+      -webkit-backdrop-filter:blur(16px);
+      backdrop-filter:blur(16px);
+      border-bottom-color:var(--hairline);
+    }
+
+    .brand{
+      font-weight:600;
+      font-size:1.08rem;
+      letter-spacing:.02em;
+      text-decoration:none;
+      color:var(--ink);
+    }
+
+    .nav__links{
+      display:flex;
+      align-items:center;
+      gap:2.75rem;
+    }
+
+    .nav__link{
+      font-size:.92rem;
+      font-weight:500;
+      letter-spacing:.02em;
+      text-decoration:none;
+      color:var(--ink-muted);
+      transition:color var(--dur) var(--ease);
+    }
+
+    .nav__link:hover{ color:var(--ink); }
+
+    .nav__link.is-active{
+      color:var(--ink);
+    }
+
+    /* The crimson-dot motif on the active link */
+    .nav__link.is-active::after{
+      content:"";
+      display:inline-block;
+      width:5px; height:5px;
+      margin-inline-start:.55rem;
+      vertical-align:middle;
+      border-radius:var(--radius-pill);
+      background:var(--crimson-lit);
+      box-shadow:0 0 10px rgba(212,96,122,.7);
+    }
+
+    /* Hamburger — three lines */
+    .nav__toggle{
+      display:none;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:5px;
+      width:44px; height:44px;
+      background:transparent;
+      border:1px solid var(--hairline);
+      border-radius:var(--radius-pill);
+      cursor:pointer;
+      transition:border-color var(--dur) var(--ease);
+    }
+
+    .nav__toggle:hover{ border-color:rgba(244,239,233,.28); }
+
+    .nav__toggle-bar{
+      display:block;
+      width:18px; height:2px;
+      background:var(--ink);
+      border-radius:var(--radius-pill);
+      transition:transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+    }
+
+    .nav__toggle.is-open .nav__toggle-bar:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+    .nav__toggle.is-open .nav__toggle-bar:nth-child(2){ opacity:0; }
+    .nav__toggle.is-open .nav__toggle-bar:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+    /* ====== HERO ====== */
+    main{ flex:1; }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:calc(var(--nav-h) + 5.5rem) 1.5rem 5.5rem;
+    }
+
+    /* Soft velvet crimson glow — diffused and feathered, no visible ring edges */
+    .hero__glow{
+      position:absolute;
+      inset:-15% -10% auto;
+      height:130%;
+      pointer-events:none;
+      background:
+        radial-gradient(60rem 42rem at 50% 36%, rgba(107,15,26,.20), rgba(107,15,26,.13) 38%, rgba(107,15,26,.06) 62%, rgba(107,15,26,.02) 74%, transparent 85%),
+        radial-gradient(42rem 28rem at 82% 8%, rgba(107,15,26,.07), rgba(107,15,26,.03) 55%, transparent 78%),
+        radial-gradient(36rem 24rem at 12% 84%, rgba(107,15,26,.05), rgba(107,15,26,.02) 55%, transparent 78%);
+    }
+
+    .hero__inner{ position:relative; max-width:44rem; }
+
+    .hero__eyebrow{
+      font-size:.72rem;
+      font-weight:500;
+      letter-spacing:.42em;
+      text-transform:uppercase;
+      color:var(--crimson-lit);
+      margin-bottom:1.6rem;
+      animation:rise .9s var(--ease) .05s both;
+    }
+
+    .hero__eyebrow::before{
+      content:"";
+      display:inline-block;
+      width:6px; height:6px;
+      margin-inline-end:.9rem;
+      vertical-align:middle;
+      border-radius:var(--radius-pill);
+      background:var(--crimson-lit);
+      box-shadow:0 0 12px rgba(212,96,122,.8);
+    }
+
+    .hero__title{
+      font-size:clamp(2rem, 4.2vw, 3rem);
+      font-weight:300;
+      letter-spacing:-.02em;
+      line-height:1.15;
+      color:var(--ink);
+      margin-bottom:1.5rem;
+      animation:rise .9s var(--ease) .18s both;
+    }
+
+    .hero__bio{
+      font-size:1.02rem;
+      font-weight:400;
+      line-height:1.8;
+      color:var(--ink-muted);
+      max-width:52ch;
+      margin:0 auto 2.6rem;
+      animation:rise .9s var(--ease) .32s both;
+    }
+
+    /* Button — transparent with velvet crimson border; gold on hover/active only */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:.95rem 2.6rem;
+      border-radius:var(--radius-pill);
+      border:1px solid rgba(212,96,122,.45);
+      color:var(--ink);
+      font-size:.95rem;
+      font-weight:500;
+      letter-spacing:.02em;
+      text-decoration:none;
+      background:transparent;
+      cursor:pointer;
+      box-shadow:0 10px 40px -14px rgba(107,15,26,.6), inset 0 0 24px rgba(107,15,26,.14);
+      transition:background var(--dur) var(--ease),
+                 border-color var(--dur) var(--ease),
+                 color var(--dur) var(--ease),
+                 box-shadow var(--dur) var(--ease),
+                 transform var(--dur) var(--ease);
+      animation:rise .9s var(--ease) .45s both;
+    }
+
+    .btn:hover{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#0a0a0a;
+      box-shadow:0 12px 42px -12px rgba(184,134,11,.45);
+    }
+
+    .btn:active{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#0a0a0a;
+      transform:translateY(1px);
+    }
+
+    /* ====== WHAT I CARE ABOUT ====== */
+    .care{
+      position:relative;
+      padding:6.5rem 1.5rem;
+    }
+
+    .care__inner{
+      max-width:64rem;
+      margin:0 auto;
+    }
+
+    .care__title{
+      font-size:clamp(1.6rem, 3vw, 2.1rem);
+      font-weight:300;
+      letter-spacing:-.02em;
+      text-align:center;
+      margin-bottom:3.5rem;
+    }
+
+    .care__grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:1.5rem;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid rgba(212,96,122,.22);
+      border-radius:var(--radius-panel);
+      padding:2.2rem 2rem;
+      transition:border-color var(--dur) var(--ease),
+                 box-shadow var(--dur) var(--ease),
+                 transform var(--dur) var(--ease);
+    }
+
+    .card:hover{
+      border-color:rgba(212,96,122,.5);
+      box-shadow:0 20px 50px -18px rgba(107,15,26,.6), 0 0 32px -8px rgba(107,15,26,.45);
+      transform:translateY(-3px);
+    }
+
+    .card__title{
+      display:flex;
+      align-items:center;
+      gap:.65rem;
+      font-size:1.08rem;
+      font-weight:600;
+      letter-spacing:-.01em;
+      margin-bottom:.85rem;
+    }
+
+    /* Crimson-dot motif — echo of the brand dot on each card */
+    .card__title::before{
+      content:"";
+      flex:none;
+      width:6px; height:6px;
+      border-radius:var(--radius-pill);
+      background:var(--crimson-lit);
+      box-shadow:0 0 10px rgba(212,96,122,.75);
+    }
+
+    .card__text{
+      font-size:.95rem;
+      line-height:1.75;
+      color:var(--ink-muted);
+    }
+
+    /* Scroll reveal */
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      transition:opacity .7s var(--ease), transform .7s var(--ease);
+    }
+
+    .reveal.is-visible{
+      opacity:1;
+      transform:none;
+    }
+
+    /* ====== BOTTOM CTA ====== */
+    .cta{
+      position:relative;
+      overflow:hidden;
+      padding:7rem 1.5rem 8rem;
+      text-align:center;
+    }
+
+    .cta__glow{
+      position:absolute;
+      inset:auto -10% -30% -10%;
+      height:80%;
+      pointer-events:none;
+      background:radial-gradient(50rem 26rem at 50% 70%, rgba(107,15,26,.10), rgba(107,15,26,.04) 55%, transparent 80%);
+    }
+
+    .cta__inner{ position:relative; }
+
+    .cta__text{
+      font-size:clamp(1.6rem, 3.2vw, 2.2rem);
+      font-weight:300;
+      letter-spacing:-.02em;
+      margin-bottom:2.4rem;
+    }
+
+    /* Solid velvet crimson button — gold on hover/active only */
+    .btn--solid{
+      background:linear-gradient(135deg, var(--crimson-deep), var(--crimson));
+      border:1px solid rgba(212,96,122,.45);
+      box-shadow:0 14px 44px -14px rgba(107,15,26,.75), inset 0 0 28px rgba(107,15,26,.3);
+    }
+
+    .btn--solid:hover{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#0a0a0a;
+      box-shadow:0 14px 44px -12px rgba(184,134,11,.5);
+    }
+
+    .btn--solid:active{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#0a0a0a;
+      transform:translateY(1px);
+    }
+
+    @keyframes rise{
+      from{ opacity:0; transform:translateY(18px); }
+      to{   opacity:1; transform:none; }
+    }
+
+    /* ====== FOOTER ====== */
+    .site-footer{
+      border-top:1px solid var(--hairline);
+      padding:1.75rem 1.5rem;
+      text-align:center;
+    }
+
+    .site-footer p{
+      font-size:.85rem;
+      font-weight:400;
+      color:var(--ink-muted);
+      letter-spacing:.02em;
+    }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width:768px){
+      .nav__toggle{ display:inline-flex; }
+
+      /* Frosted glass dropdown — smooth slide-down */
+      .nav__links{
+        position:fixed;
+        top:calc(var(--nav-h) + 8px);
+        left:1rem;
+        right:1rem;
+        flex-direction:column;
+        align-items:stretch;
+        gap:2px;
+        padding:.4rem;
+        border:1px solid var(--hairline);
+        border-radius:var(--radius-panel);
+        background:var(--frost);
+        -webkit-backdrop-filter:blur(18px);
+        backdrop-filter:blur(18px);
+        box-shadow:0 24px 60px -20px rgba(0,0,0,.85);
+        opacity:0;
+        transform:translateY(-12px);
+        visibility:hidden;
+        pointer-events:none;
+        transition:opacity .35s var(--ease),
+                   transform .35s var(--ease),
+                   visibility .35s var(--ease);
+      }
+
+      .nav__links.is-open{
+        opacity:1;
+        transform:translateY(0);
+        visibility:visible;
+        pointer-events:auto;
+      }
+
+      .nav__link{
+        display:block;
+        padding:.95rem 1.15rem;
+        border-radius:var(--radius-pill);
+      }
+
+      .nav__link:hover{ background:rgba(255,255,255,.04); }
+
+      .care{ padding:5rem 1.25rem; }
+      .care__grid{ grid-template-columns:1fr; gap:1rem; }
+      .care__title{ margin-bottom:2.5rem; }
+      .cta{ padding:5rem 1.5rem 6rem; }
+    }
+
+    /* ====== REDUCED MOTION ====== */
+    @media (prefers-reduced-motion: reduce){
+      html{ scroll-behavior:auto; }
+      *,*::before,*::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+      }
+      .hero__eyebrow,
+      .hero__title,
+      .hero__bio,
+      .btn{ animation:none; }
+      .reveal{
+        opacity:1;
+        transform:none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ====== NAVIGATION ====== -->
+  <header class="site-header" id="siteHeader">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="index.html">AD</a>
+
+      <ul class="nav__links" id="navMenu">
+        <li><a class="nav__link" href="index.html">Home</a></li>
+        <li><a class="nav__link is-active" href="about.html" aria-current="page">About</a></li>
+        <li><a class="nav__link" href="projects.html">Projects</a></li>
+      </ul>
+
+      <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ====== HERO ====== -->
+    <section class="hero" aria-label="About me">
+      <div class="hero__glow" aria-hidden="true"></div>
+
+      <div class="hero__inner">
+        <p class="hero__eyebrow">About Me</p>
+
+        <h1 class="hero__title">Behind the Keyboard</h1>
+
+        <p class="hero__bio">I am a web developer passionate about building high-quality websites. I focus on clean code, responsive layouts, and performance.</p>
+
+        <a class="btn" href="index.html">Back to Home</a>
+      </div>
+    </section>
+
+    <!-- ====== WHAT I CARE ABOUT ====== -->
+    <section class="care" aria-labelledby="careTitle">
+      <div class="care__inner">
+        <h2 class="care__title reveal" id="careTitle">What I Care About</h2>
+
+        <div class="care__grid">
+          <article class="card reveal">
+            <h3 class="card__title">Responsive Layouts</h3>
+            <p class="card__text">Mobile-first designs that work perfectly on any screen size.</p>
+          </article>
+
+          <article class="card reveal">
+            <h3 class="card__title">Clean Code</h3>
+            <p class="card__text">Well-structured, maintainable, and semantic code.</p>
+          </article>
+
+          <article class="card reveal">
+            <h3 class="card__title">Performance</h3>
+            <p class="card__text">Fast load times and smooth interactions.</p>
+          </article>
+
+          <article class="card reveal">
+            <h3 class="card__title">Accessibility</h3>
+            <p class="card__text">Building inclusive interfaces that everyone can use.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== BOTTOM CTA ====== -->
+    <section class="cta" aria-label="Contact">
+      <div class="cta__glow" aria-hidden="true"></div>
+
+      <div class="cta__inner">
+        <h2 class="cta__text">Interested in working together?</h2>
+        <a class="btn btn--solid" href="mailto:your-email@example.com">Get in Touch</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <p>&copy; 2026 AliDev98. All rights reserved.</p>
+  </footer>
+
+  <!-- ====== SCRIPT ====== -->
+  <script>
+    (function(){
+      var header = document.getElementById('siteHeader');
+      var toggle = document.getElementById('navToggle');
+      var menu   = document.getElementById('navMenu');
+      var mq     = window.matchMedia('(min-width: 769px)');
+
+      function setMenu(open){
+        menu.classList.toggle('is-open', open);
+        toggle.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      }
+
+      toggle.addEventListener('click', function(){
+        setMenu(!menu.classList.contains('is-open'));
+      });
+
+      menu.querySelectorAll('a').forEach(function(link){
+        link.addEventListener('click', function(){ setMenu(false); });
+      });
+
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape' && menu.classList.contains('is-open')){
+          setMenu(false);
+          toggle.focus();
+        }
+      });
+
+      mq.addEventListener('change', function(e){
+        if(e.matches) setMenu(false);
+      });
+
+      /* Frosted nav background once the page scrolls */
+      var ticking = false;
+      function onScroll(){
+        if(!ticking){
+          requestAnimationFrame(function(){
+            header.classList.toggle('is-scrolled', window.scrollY > 8);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive:true });
+      onScroll();
+
+      /* Scroll reveal for section title & cards (respects reduced motion) */
+      var reveals = document.querySelectorAll('.reveal');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if(reduceMotion || !('IntersectionObserver' in window)){
+        reveals.forEach(function(el){ el.classList.add('is-visible'); });
+      } else {
+        var observer = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if(entry.isIntersecting){
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold:.15 });
+
+        reveals.forEach(function(el){ observer.observe(el); });
+      }
+    })();
+  </script>
+
+</body>
+</html>
