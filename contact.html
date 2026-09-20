@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact AliDev98 — have a project in mind? Get in touch for web development and design work.">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Contact — AliDev98.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ====== TOKENS & BASE ====== */
+    :root{
+      --bg:            #0a0a0a;
+      --crimson-deep:  #6B0F1A;
+      --crimson:       #8f1626;
+      --crimson-lit:   #d4607a;   /* readable crimson for text & accents on black */
+      --gold:          #B8860B;   /* reserved: button hover / active / focus only */
+      --gold-lit:      #d9a94e;   /* focus ring */
+      --ink:           #f4efe9;
+      --ink-muted:     #a89f97;
+      --hairline:      rgba(244,239,233,.09);
+      --frost:         rgba(12,10,11,.72);
+      --card:          #111111;
+
+      --radius-panel:  18px;
+      --radius-field:  12px;
+      --radius-pill:   999px;
+
+      --nav-h:         72px;
+      --ease:          cubic-bezier(.22,.61,.21,1);
+      --dur:           .3s;
+    }
+
+    *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+
+    html{ scroll-behavior:smooth; }
+
+    body{
+      font-family:'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      overflow-x:hidden;
+      min-height:100svh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    ::selection{ background:rgba(107,15,26,.9); color:var(--ink); }
+
+    a{ color:inherit; }
+    ul{ list-style:none; }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible{
+      outline:2px solid var(--gold-lit);
+      outline-offset:4px;
+      border-radius:var(--radius-pill);
+    }
+
+    input:focus-visible,
+    textarea:focus-visible{
+      border-radius:var(--radius-field);
+      outline-offset:2px;
+    }
+
+    /* Velvet film grain over the whole page */
+    .grain{
+      position:fixed; inset:0;
+      z-index:200;
+      pointer-events:none;
+      opacity:.05;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    }
+
+    /* ====== NAVIGATION ====== */
+    .site-header{
+      position:fixed;
+      inset:0 0 auto 0;
+      z-index:100;
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      height:var(--nav-h);
+      padding:0 clamp(1.25rem, 5vw, 3.5rem);
+      border-bottom:1px solid transparent;
+      transition:background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+
+    .site-header.is-scrolled .nav{
+      background:var(--frost);
+      -webkit-backdrop-filter:blur(16px);
+      backdrop-filter:blur(16px);
+      border-bottom-color:var(--hairline);
+    }
+
+    .brand{
+      font-weight:600;
+      font-size:1.08rem;
+      letter-spacing:.02em;
+      text-decoration:none;
+      color:var(--ink);
+    }
+
+    .nav__links{
+      display:flex;
+      align-items:center;
+      gap:2.5rem;
+    }
+
+    .nav__link{
+      font-size:.92rem;
+      font-weight:500;
+      letter-spacing:.02em;
+      text-decoration:none;
+      color:var(--ink-muted);
+      transition:color var(--dur) var(--ease);
+    }
+
+    .nav__link:hover{ color:var(--ink); }
+
+    .nav__link.is-active{
+      color:var(--ink);
+    }
+
+    /* The crimson-dot motif on the active link */
+    .nav__link.is-active::after{
+      content:"";
+      display:inline-block;
+      width:5px; height:5px;
+      margin-inline-start:.55rem;
+      vertical-align:middle;
+      border-radius:var(--radius-pill);
+      background:var(--crimson-lit);
+      box-shadow:0 0 10px rgba(212,96,122,.7);
+    }
+
+    /* Hamburger — three lines */
+    .nav__toggle{
+      display:none;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:5px;
+      width:44px; height:44px;
+      background:transparent;
+      border:1px solid var(--hairline);
+      border-radius:var(--radius-pill);
+      cursor:pointer;
+      transition:border-color var(--dur) var(--ease);
+    }
+
+    .nav__toggle:hover{ border-color:rgba(244,239,233,.28); }
+
+    .nav__toggle-bar{
+      display:block;
+      width:18px; height:2px;
+      background:var(--ink);
+      border-radius:var(--radius-pill);
+      transition:transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+    }
+
+    .nav__toggle.is-open .nav__toggle-bar:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+    .nav__toggle.is-open .nav__toggle-bar:nth-child(2){ opacity:0; }
+    .nav__toggle.is-open .nav__toggle-bar:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+    /* ====== HEADER SECTION ====== */
+    main{ flex:1; }
+
+    .page-head{
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:calc(var(--nav-h) + 5.5rem) 1.5rem 4.5rem;
+    }
+
+    /* Soft velvet crimson glow — diffused and feathered, no visible ring edges */
+    .page-head__glow{
+      position:absolute;
+      inset:-15% -10% auto;
+      height:130%;
+      pointer-events:none;
+      background:
+        radial-gradient(60rem 42rem at 50% 36%, rgba(107,15,26,.20), rgba(107,15,26,.13) 38%, rgba(107,15,26,.06) 62%, rgba(107,15,26,.02) 74%, transparent 85%),
+        radial-gradient(42rem 28rem at 82% 8%, rgba(107,15,26,.07), rgba(107,15,26,.03) 55%, transparent 78%),
+        radial-gradient(36rem 24rem at 12% 84%, rgba(107,15,26,.05), rgba(107,15,26,.02) 55%, transparent 78%);
+    }
+
+    .page-head__inner{ position:relative; max-width:44rem; }
+
+    .page-head__eyebrow{
+      font-size:.72rem;
+      font-weight:500;
+      letter-spacing:.42em;
+      text-transform:uppercase;
+      color:var(--crimson-lit);
+      margin-bottom:1.6rem;
+      animation:rise .9s var(--ease) .05s both;
+    }
+
+    .page-head__eyebrow::before{
+      content:"";
+      display:inline-block;
+      width:6px; height:6px;
+      margin-inline-end:.9rem;
+      vertical-align:middle;
+      border-radius:var(--radius-pill);
+      background:var(--crimson-lit);
+      box-shadow:0 0 12px rgba(212,96,122,.8);
+    }
+
+    .page-head__title{
+      font-size:clamp(2rem, 4.2vw, 3rem);
+      font-weight:300;
+      letter-spacing:-.02em;
+      line-height:1.15;
+      color:var(--ink);
+      margin-bottom:1.2rem;
+      animation:rise .9s var(--ease) .18s both;
+    }
+
+    .page-head__subtitle{
+      font-size:1.02rem;
+      font-weight:400;
+      line-height:1.8;
+      color:var(--ink-muted);
+      max-width:52ch;
+      margin:0 auto;
+      animation:rise .9s var(--ease) .32s both;
+    }
+
+    /* ====== CONTACT LAYOUT ====== */
+    .contact{
+      padding:2rem 1.5rem 7rem;
+    }
+
+    .contact__inner{
+      max-width:64rem;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:5fr 7fr;
+      gap:1.5rem;
+      align-items:start;
+    }
+
+    /* ====== INFO CARD ====== */
+    .info-card{
+      background:var(--card);
+      border:1px solid rgba(212,96,122,.22);
+      border-radius:var(--radius-panel);
+      padding:2.4rem 2rem;
+      animation:rise .9s var(--ease) .45s both;
+      transition:border-color var(--dur) var(--ease),
+                 box-shadow var(--dur) var(--ease);
+    }
+
+    .info-card:hover{
+      border-color:rgba(212,96,122,.4);
+      box-shadow:0 20px 50px -18px rgba(107,15,26,.5);
+    }
+
+    .info-card__title{
+      font-size:1.08rem;
+      font-weight:600;
+      letter-spacing:-.01em;
+      margin-bottom:1.8rem;
+    }
+
+    .info-item{
+      display:flex;
+      align-items:flex-start;
+      gap:.9rem;
+      padding:.9rem 0;
+    }
+
+    .info-item + .info-item{
+      border-top:1px solid var(--hairline);
+    }
+
+    .info-item__icon{
+      flex:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:38px; height:38px;
+      margin-top:.15rem;
+      border-radius:var(--radius-pill);
+      border:1px solid rgba(212,96,122,.35);
+      background:linear-gradient(135deg, rgba(107,15,26,.35), rgba(107,15,26,.15));
+      color:var(--crimson-lit);
+    }
+
+    .info-item__icon svg{
+      width:17px; height:17px;
+    }
+
+    .info-item__label{
+      font-size:.7rem;
+      font-weight:500;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--ink-muted);
+      margin-bottom:.2rem;
+    }
+
+    .info-item__value{
+      font-size:.95rem;
+      line-height:1.6;
+      color:var(--ink);
+      word-break:break-word;
+    }
+
+    a.info-item__value{
+      text-decoration:none;
+      transition:color var(--dur) var(--ease);
+    }
+
+    a.info-item__value:hover{ color:var(--crimson-lit); }
+
+    /* Social links — subtle crimson underline */
+    .socials{
+      margin-top:1.8rem;
+      padding-top:1.5rem;
+      border-top:1px solid var(--hairline);
+    }
+
+    .socials__links{
+      display:flex;
+      gap:1.75rem;
+    }
+
+    .social-link{
+      font-size:.92rem;
+      font-weight:500;
+      color:var(--ink);
+      text-decoration:none;
+      padding-bottom:.2rem;
+      border-bottom:1px solid rgba(212,96,122,.45);
+      transition:color var(--dur) var(--ease),
+                 border-color var(--dur) var(--ease);
+    }
+
+    .social-link:hover{
+      color:var(--crimson-lit);
+      border-bottom-color:var(--crimson-lit);
+    }
+
+    /* ====== FORM ====== */
+    .form-panel{
+      background:var(--card);
+      border:1px solid rgba(212,96,122,.22);
+      border-radius:var(--radius-panel);
+      padding:2.4rem 2rem;
+      animation:rise .9s var(--ease) .55s both;
+    }
+
+    .form-panel__title{
+      font-size:1.08rem;
+      font-weight:600;
+      letter-spacing:-.01em;
+      margin-bottom:1.8rem;
+    }
+
+    .field{
+      margin-bottom:1.4rem;
+    }
+
+    .field__label{
+      display:block;
+      font-size:.72rem;
+      font-weight:500;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--ink-muted);
+      margin-bottom:.55rem;
+    }
+
+    .field__input{
+      width:100%;
+      background:var(--bg);
+      border:1px solid rgba(212,96,122,.35);
+      border-radius:var(--radius-field);
+      color:var(--ink);
+      font-family:inherit;
+      font-size:.95rem;
+      padding:.85rem 1.05rem;
+      transition:border-color var(--dur) var(--ease),
+                 box-shadow var(--dur) var(--ease);
+    }
+
+    .field__input::placeholder{
+      color:rgba(168,159,151,.55);
+    }
+
+    .field__input:focus{
+      outline:none;
+      border-color:var(--gold);
+      box-shadow:0 0 0 3px rgba(184,134,11,.18), 0 0 22px -4px rgba(184,134,11,.35);
+    }
+
+    textarea.field__input{
+      min-height:140px;
+      resize:vertical;
+    }
+
+    /* Solid velvet crimson button — gold on hover/active only */
+    .btn--solid{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      padding:.95rem 2.6rem;
+      border-radius:var(--radius-pill);
+      border:1px solid rgba(212,96,122,.45);
+      color:var(--ink);
+      font-family:inherit;
+      font-size:.95rem;
+      font-weight:500;
+      letter-spacing:.02em;
+      background:linear-gradient(135deg, var(--crimson-deep), var(--crimson));
+      cursor:pointer;
+      box-shadow:0 14px 44px -14px rgba(107,15,26,.75), inset 0 0 28px rgba(107,15,26,.3);
+      transition:background var(--dur) var(--ease),
+                 border-color var(--dur) var(--ease),
+                 color var(--dur) var(--ease),
+                 box-shadow var(--dur) var(--ease),
+                 transform var(--dur) var(--ease);
+    }
+
+    .btn--solid:hover{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#0a0a0a;
+      box-shadow:0 14px 44px -12px rgba(184,134,11,.5);
+    }
+
+    .btn--solid:active{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#0a0a0a;
+      transform:translateY(1px);
+    }
+
+    .form-note{
+      margin-top:1.1rem;
+      font-size:.8rem;
+      color:var(--ink-muted);
+      text-align:center;
+    }
+
+    .form-status{
+      display:none;
+      margin-top:1.1rem;
+      padding:.8rem 1.1rem;
+      border:1px solid rgba(212,96,122,.4);
+      border-radius:var(--radius-field);
+      background:rgba(107,15,26,.16);
+      color:var(--crimson-lit);
+      font-size:.88rem;
+      text-align:center;
+    }
+
+    .form-status.is-visible{ display:block; }
+
+    @keyframes rise{
+      from{ opacity:0; transform:translateY(18px); }
+      to{   opacity:1; transform:none; }
+    }
+
+    /* ====== FOOTER ====== */
+    .site-footer{
+      border-top:1px solid var(--hairline);
+      padding:1.75rem 1.5rem;
+      text-align:center;
+    }
+
+    .site-footer p{
+      font-size:.85rem;
+      font-weight:400;
+      color:var(--ink-muted);
+      letter-spacing:.02em;
+    }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width:900px){
+      .contact__inner{ grid-template-columns:1fr; }
+    }
+
+    @media (max-width:768px){
+      .nav__toggle{ display:inline-flex; }
+
+      /* Frosted glass dropdown — smooth slide-down */
+      .nav__links{
+        position:fixed;
+        top:calc(var(--nav-h) + 8px);
+        left:1rem;
+        right:1rem;
+        flex-direction:column;
+        align-items:stretch;
+        gap:2px;
+        padding:.4rem;
+        border:1px solid var(--hairline);
+        border-radius:var(--radius-panel);
+        background:var(--frost);
+        -webkit-backdrop-filter:blur(18px);
+        backdrop-filter:blur(18px);
+        box-shadow:0 24px 60px -20px rgba(0,0,0,.85);
+        opacity:0;
+        transform:translateY(-12px);
+        visibility:hidden;
+        pointer-events:none;
+        transition:opacity .35s var(--ease),
+                   transform .35s var(--ease),
+                   visibility .35s var(--ease);
+      }
+
+      .nav__links.is-open{
+        opacity:1;
+        transform:translateY(0);
+        visibility:visible;
+        pointer-events:auto;
+      }
+
+      .nav__link{
+        display:block;
+        padding:.95rem 1.15rem;
+        border-radius:var(--radius-pill);
+      }
+
+      .nav__link:hover{ background:rgba(255,255,255,.04); }
+
+      .contact{ padding:1.5rem 1.25rem 5rem; }
+      .info-card,
+      .form-panel{ padding:1.9rem 1.5rem; }
+    }
+
+    /* ====== REDUCED MOTION ====== */
+    @media (prefers-reduced-motion: reduce){
+      html{ scroll-behavior:auto; }
+      *,*::before,*::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+      }
+      .page-head__eyebrow,
+      .page-head__title,
+      .page-head__subtitle,
+      .info-card,
+      .form-panel{ animation:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ====== NAVIGATION ====== -->
+  <header class="site-header" id="siteHeader">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="index.html">AD</a>
+
+      <ul class="nav__links" id="navMenu">
+        <li><a class="nav__link" href="index.html">Home</a></li>
+        <li><a class="nav__link" href="about.html">About</a></li>
+        <li><a class="nav__link" href="projects.html">Projects</a></li>
+        <li><a class="nav__link is-active" href="contact.html" aria-current="page">Contact</a></li>
+      </ul>
+
+      <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ====== HEADER SECTION ====== -->
+    <section class="page-head" aria-label="Contact introduction">
+      <div class="page-head__glow" aria-hidden="true"></div>
+
+      <div class="page-head__inner">
+        <p class="page-head__eyebrow">Contact</p>
+
+        <h1 class="page-head__title">Let's Work Together</h1>
+
+        <p class="page-head__subtitle">Have a project in mind? Let's build something great.</p>
+      </div>
+    </section>
+
+    <!-- ====== CONTACT INFO + FORM ====== -->
+    <section class="contact" aria-label="Contact details and form">
+      <div class="contact__inner">
+
+        <!-- Info card -->
+        <div class="info-card">
+          <h2 class="info-card__title">Contact Information</h2>
+
+          <div class="info-item">
+            <span class="info-item__icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/></svg>
+            </span>
+            <div>
+              <p class="info-item__label">Email</p>
+              <a class="info-item__value" href="mailto:hello@alidev98.com">hello@alidev98.com</a>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <span class="info-item__icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
+            <div>
+              <p class="info-item__label">Location</p>
+              <p class="info-item__value">Available worldwide / Remote</p>
+            </div>
+          </div>
+
+          <div class="socials">
+            <p class="info-item__label" style="margin-bottom:.9rem;">Social</p>
+            <div class="socials__links">
+              <a class="social-link" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a class="social-link" href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form (visual only — no backend) -->
+        <form class="form-panel" id="contactForm" novalidate>
+          <h2 class="form-panel__title">Send a Message</h2>
+
+          <div class="field">
+            <label class="field__label" for="name">Your Name</label>
+            <input class="field__input" type="text" id="name" name="name" placeholder="John Doe" autocomplete="name" required>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="email">Your Email</label>
+            <input class="field__input" type="email" id="email" name="email" placeholder="john@example.com" autocomplete="email" required>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="message">Your Message</label>
+            <textarea class="field__input" id="message" name="message" placeholder="Tell me about your project..." required></textarea>
+          </div>
+
+          <button class="btn--solid" type="submit">Send Message</button>
+
+          <p class="form-status" id="formStatus" role="status"></p>
+          <p class="form-note">This is a visual demo form — it is not connected to a backend yet.</p>
+        </form>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <p>&copy; 2026 AliDev98. All rights reserved.</p>
+  </footer>
+
+  <!-- ====== SCRIPT ====== -->
+  <script>
+    (function(){
+      var header = document.getElementById('siteHeader');
+      var toggle = document.getElementById('navToggle');
+      var menu   = document.getElementById('navMenu');
+      var mq     = window.matchMedia('(min-width: 769px)');
+
+      function setMenu(open){
+        menu.classList.toggle('is-open', open);
+        toggle.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      }
+
+      toggle.addEventListener('click', function(){
+        setMenu(!menu.classList.contains('is-open'));
+      });
+
+      menu.querySelectorAll('a').forEach(function(link){
+        link.addEventListener('click', function(){ setMenu(false); });
+      });
+
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape' && menu.classList.contains('is-open')){
+          setMenu(false);
+          toggle.focus();
+        }
+      });
+
+      mq.addEventListener('change', function(e){
+        if(e.matches) setMenu(false);
+      });
+
+      /* Frosted nav background once the page scrolls */
+      var ticking = false;
+      function onScroll(){
+        if(!ticking){
+          requestAnimationFrame(function(){
+            header.classList.toggle('is-scrolled', window.scrollY > 8);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive:true });
+      onScroll();
+
+      /* Visual-only form: validate client-side, show a status message, never send anywhere */
+      var form   = document.getElementById('contactForm');
+      var status = document.getElementById('formStatus');
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+
+        var name    = form.elements['name'].value.trim();
+        var email   = form.elements['email'].value.trim();
+        var message = form.elements['message'].value.trim();
+        var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        if(!name || !message || !emailOk){
+          status.textContent = 'Please fill in all fields with a valid email address.';
+          status.classList.add('is-visible');
+          return;
+        }
+
+        status.textContent = 'Thank you, ' + name + ' — your message has been noted (demo only).';
+        status.classList.add('is-visible');
+        form.reset();
+      });
+    })();
+  </script>
+
+</body>
+</html>
