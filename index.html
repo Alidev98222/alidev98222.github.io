@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AliDev98 — Web Developer & Designer. Turning ideas into interfaces with elegant, high-quality websites.">
+  <meta name="description" content="AliDev98 â€” Web Developer & Designer. Turning ideas into interfaces with elegant, high-quality websites.">
   <meta name="theme-color" content="#0a0a0a">
-  <title>AliDev98. — Web Developer &amp; Designer</title>
+  <title>AliDev98. â€” Web Developer &amp; Designer</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -111,7 +111,7 @@
     .nav__links{
       display:flex;
       align-items:center;
-      gap:2.75rem;
+      gap:2.5rem;
     }
 
     .nav__link{
@@ -129,7 +129,7 @@
       color:var(--ink);
     }
 
-    /* The crimson-dot motif — echo of the brand dot on the active link */
+    /* The crimson-dot motif â€” echo of the brand dot on the active link */
     .nav__link.is-active::after{
       content:"";
       display:inline-block;
@@ -141,7 +141,7 @@
       box-shadow:0 0 10px rgba(212,96,122,.7);
     }
 
-    /* Hamburger — three lines */
+    /* Hamburger â€” three lines */
     .nav__toggle{
       display:none;
       flex-direction:column;
@@ -184,7 +184,7 @@
       text-align:center;
     }
 
-    /* Soft velvet crimson glow — diffused and feathered, no visible ring edges */
+    /* Soft velvet crimson glow â€” diffused and feathered, no visible ring edges */
     .hero__glow{
       position:absolute;
       inset:-15% -10% auto;
@@ -247,7 +247,7 @@
       animation:rise .9s var(--ease) .45s both;
     }
 
-    /* Button — transparent with velvet crimson border; gold on hover/active only */
+    /* Button â€” transparent with velvet crimson border; gold on hover/active only */
     .btn{
       display:inline-flex;
       align-items:center;
@@ -308,7 +308,7 @@
     @media (max-width:768px){
       .nav__toggle{ display:inline-flex; }
 
-      /* Frosted glass dropdown — smooth slide-down */
+      /* Frosted glass dropdown â€” smooth slide-down */
       .nav__links{
         position:fixed;
         top:calc(var(--nav-h) + 8px);
@@ -378,6 +378,7 @@
         <li><a class="nav__link is-active" href="index.html" aria-current="page">Home</a></li>
         <li><a class="nav__link" href="about.html">About</a></li>
         <li><a class="nav__link" href="projects.html">Projects</a></li>
+        <li><a class="nav__link" href="contact.html">Contact</a></li>
       </ul>
 
       <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
