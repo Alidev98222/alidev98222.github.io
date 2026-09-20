@@ -3,501 +3,695 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Projects by AliDev98 — a selection of websites, bots, AI tools and automation scripts built and designed with care.">
   <meta name="theme-color" content="#0a0a0a">
   <title>Projects — AliDev98.</title>
-  <meta name="description" content="A selection of projects built and designed by AliDev98 — web development, bots, AI tools and automation.">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
-    /* ===== Tokens ===== */
-    :root {
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --line: rgba(255, 255, 255, 0.08);
-      --crimson: #a6192e;
-      --crimson-bright: #e5385c;
-      --crimson-border: rgba(166, 25, 46, 0.32);
-      --crimson-glow: rgba(166, 25, 46, 0.40);
-      --text: #f4f4f5;
-      --muted: #a1a1aa;
-      --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      --container: 1120px;
-      --nav-h: 76px;
-      --r-card: 20px;
-      --r-pill: 999px;
-      --sp-4: 16px;
-      --sp-6: 24px;
-      --sp-8: 32px;
-      --sp-12: 48px;
-      --sp-16: 64px;
-      --sp-24: 96px;
-      --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    /* ====== TOKENS & BASE ====== */
+    :root{
+      --bg:            #0a0a0a;
+      --crimson-deep:  #6B0F1A;
+      --crimson:       #8f1626;
+      --crimson-lit:   #d4607a;   /* readable crimson for text & accents on black */
+      --gold:          #B8860B;   /* reserved: button hover / active only */
+      --gold-lit:      #d9a94e;   /* focus ring */
+      --ink:           #f4efe9;
+      --ink-muted:     #a89f97;
+      --hairline:      rgba(244,239,233,.09);
+      --frost:         rgba(12,10,11,.72);
+      --card:          #111111;
+
+      --radius-panel:  18px;
+      --radius-pill:   999px;
+
+      --nav-h:         72px;
+      --ease:          cubic-bezier(.22,.61,.21,1);
+      --dur:           .3s;
     }
 
-    /* ===== Base ===== */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font);
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-    ul { list-style: none; }
-    ::selection { background: rgba(166, 25, 46, 0.55); color: #fff; }
-    a:focus-visible, button:focus-visible {
-      outline: 2px solid var(--crimson-bright);
-      outline-offset: 3px;
-      border-radius: 4px;
+    *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+
+    html{ scroll-behavior:smooth; }
+
+    body{
+      font-family:'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      overflow-x:hidden;
+      min-height:100svh;
+      display:flex;
+      flex-direction:column;
     }
 
-    /* Ambient crimson atmosphere */
-    .ambience {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
+    ::selection{ background:rgba(107,15,26,.9); color:var(--ink); }
+
+    a{ color:inherit; }
+    ul{ list-style:none; }
+
+    a:focus-visible,
+    button:focus-visible{
+      outline:2px solid var(--gold-lit);
+      outline-offset:4px;
+      border-radius:var(--radius-pill);
+    }
+
+    /* Velvet film grain over the whole page */
+    .grain{
+      position:fixed; inset:0;
+      z-index:200;
+      pointer-events:none;
+      opacity:.05;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    }
+
+    /* ====== NAVIGATION ====== */
+    .site-header{
+      position:fixed;
+      inset:0 0 auto 0;
+      z-index:100;
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      height:var(--nav-h);
+      padding:0 clamp(1.25rem, 5vw, 3.5rem);
+      border-bottom:1px solid transparent;
+      transition:background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+
+    .site-header.is-scrolled .nav{
+      background:var(--frost);
+      -webkit-backdrop-filter:blur(16px);
+      backdrop-filter:blur(16px);
+      border-bottom-color:var(--hairline);
+    }
+
+    .brand{
+      font-weight:600;
+      font-size:1.08rem;
+      letter-spacing:.02em;
+      text-decoration:none;
+      color:var(--ink);
+    }
+
+    .nav__links{
+      display:flex;
+      align-items:center;
+      gap:2.75rem;
+    }
+
+    .nav__link{
+      font-size:.92rem;
+      font-weight:500;
+      letter-spacing:.02em;
+      text-decoration:none;
+      color:var(--ink-muted);
+      transition:color var(--dur) var(--ease);
+    }
+
+    .nav__link:hover{ color:var(--ink); }
+
+    .nav__link.is-active{
+      color:var(--ink);
+    }
+
+    /* The crimson-dot motif on the active link */
+    .nav__link.is-active::after{
+      content:"";
+      display:inline-block;
+      width:5px; height:5px;
+      margin-inline-start:.55rem;
+      vertical-align:middle;
+      border-radius:var(--radius-pill);
+      background:var(--crimson-lit);
+      box-shadow:0 0 10px rgba(212,96,122,.7);
+    }
+
+    /* Hamburger — three lines */
+    .nav__toggle{
+      display:none;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:5px;
+      width:44px; height:44px;
+      background:transparent;
+      border:1px solid var(--hairline);
+      border-radius:var(--radius-pill);
+      cursor:pointer;
+      transition:border-color var(--dur) var(--ease);
+    }
+
+    .nav__toggle:hover{ border-color:rgba(244,239,233,.28); }
+
+    .nav__toggle-bar{
+      display:block;
+      width:18px; height:2px;
+      background:var(--ink);
+      border-radius:var(--radius-pill);
+      transition:transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+    }
+
+    .nav__toggle.is-open .nav__toggle-bar:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+    .nav__toggle.is-open .nav__toggle-bar:nth-child(2){ opacity:0; }
+    .nav__toggle.is-open .nav__toggle-bar:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+    /* ====== HEADER SECTION ====== */
+    main{ flex:1; }
+
+    .page-head{
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:calc(var(--nav-h) + 5.5rem) 1.5rem 5rem;
+    }
+
+    /* Soft velvet crimson glow — diffused and feathered, no visible ring edges */
+    .page-head__glow{
+      position:absolute;
+      inset:-15% -10% auto;
+      height:130%;
+      pointer-events:none;
       background:
-        radial-gradient(640px 420px at 12% -8%, rgba(166, 25, 46, 0.16), transparent 65%),
-        radial-gradient(720px 480px at 88% 112%, rgba(166, 25, 46, 0.12), transparent 65%);
-    }
-    .nav, main, footer { position: relative; z-index: 1; }
-
-    /* ===== Navigation ===== */
-    .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 50;
-      background: rgba(10, 10, 10, 0.6);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid transparent;
-      transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
-    }
-    .nav.scrolled { background: rgba(10, 10, 10, 0.86); border-bottom-color: var(--line); }
-    .nav-inner {
-      max-width: var(--container);
-      margin: 0 auto;
-      height: var(--nav-h);
-      padding: 0 var(--sp-6);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .logo {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      text-decoration: none;
-    }
-    .logo .dot { color: var(--crimson-bright); }
-    .nav-menu { display: flex; align-items: center; gap: 36px; }
-    .nav-menu a {
-      position: relative;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 6px 0;
-      transition: color 0.3s var(--ease);
-    }
-    .nav-menu a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -2px;
-      height: 2px;
-      background: var(--crimson-bright);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s var(--ease);
-    }
-    .nav-menu a:hover { color: var(--text); }
-    .nav-menu a:hover::after,
-    .nav-menu a.active::after { transform: scaleX(1); }
-    .nav-menu a.active { color: var(--text); }
-
-    /* Hamburger */
-    .nav-toggle {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      width: 44px;
-      height: 44px;
-      background: transparent;
-      border: 0;
-      cursor: pointer;
-      padding: 0;
-    }
-    .nav-toggle span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      margin: 0 auto;
-      background: var(--text);
-      transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
-    }
-    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-toggle.open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* ===== Hero ===== */
-    .hero {
-      text-align: center;
-      padding: calc(var(--nav-h) + 96px) var(--sp-6) var(--sp-16);
-    }
-    .eyebrow {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.45em;
-      text-transform: uppercase;
-      color: var(--crimson-bright);
-      margin-bottom: var(--sp-6);
-    }
-    .headline {
-      font-size: clamp(2.75rem, 7vw, 4.5rem);
-      font-weight: 300;
-      letter-spacing: -0.03em;
-      line-height: 1.08;
-      margin-bottom: var(--sp-8);
-    }
-    .headline .hl {
-      text-decoration: underline;
-      text-decoration-color: var(--crimson);
-      text-decoration-thickness: 4px;
-      text-underline-offset: 14px;
-    }
-    .lede {
-      color: var(--muted);
-      font-size: 17px;
-      max-width: 520px;
-      margin: 0 auto;
+        radial-gradient(60rem 42rem at 50% 36%, rgba(107,15,26,.20), rgba(107,15,26,.13) 38%, rgba(107,15,26,.06) 62%, rgba(107,15,26,.02) 74%, transparent 85%),
+        radial-gradient(42rem 28rem at 82% 8%, rgba(107,15,26,.07), rgba(107,15,26,.03) 55%, transparent 78%),
+        radial-gradient(36rem 24rem at 12% 84%, rgba(107,15,26,.05), rgba(107,15,26,.02) 55%, transparent 78%);
     }
 
-    /* ===== Projects Grid ===== */
-    .projects { padding: 0 var(--sp-6) var(--sp-8); }
-    .container { max-width: var(--container); margin: 0 auto; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 32px 28px;
-    }
-    .card {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      background: var(--surface);
-      border: 1px solid var(--crimson-border);
-      border-radius: var(--r-card);
-      padding: 48px 32px 32px;
-      transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
-    }
-    .card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(229, 56, 92, 0.55);
-      box-shadow:
-        0 0 0 1px rgba(229, 56, 92, 0.18),
-        0 18px 50px -18px var(--crimson-glow),
-        0 0 60px -12px rgba(166, 25, 46, 0.30);
-    }
-    .badge {
-      position: absolute;
-      top: -14px;
-      left: 24px;
-      background: var(--crimson);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      padding: 6px 14px;
-      border-radius: var(--r-pill);
-      box-shadow: 0 8px 24px rgba(166, 25, 46, 0.45);
-    }
-    .card h2 {
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 10px;
-    }
-    .card p { color: var(--muted); font-size: 15px; }
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: auto;
-      padding-top: var(--sp-6);
-    }
-    .tags li {
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--line);
-      padding: 6px 14px;
-      border-radius: var(--r-pill);
-    }
-    .card .btn { margin-top: var(--sp-8); align-self: flex-start; }
+    .page-head__inner{ position:relative; max-width:44rem; }
 
-    /* ===== Buttons ===== */
-    .btn {
-      display: inline-block;
-      background: var(--crimson);
-      color: #fff;
-      font-family: inherit;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      line-height: 1;
-      text-decoration: none;
-      border: 0;
-      padding: 14px 28px;
-      border-radius: var(--r-pill);
-      cursor: pointer;
-      transition: background 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
-    }
-    .btn:hover {
-      background: var(--crimson-bright);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 32px -10px var(--crimson-glow);
-    }
-    .btn:active { transform: translateY(0); }
-    .btn-lg { padding: 17px 42px; font-size: 15px; }
-
-    /* ===== CTA ===== */
-    .cta {
-      text-align: center;
-      padding: var(--sp-24) var(--sp-6) var(--sp-16);
-    }
-    .cta h2 {
-      font-size: clamp(1.75rem, 4.5vw, 2.6rem);
-      font-weight: 300;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-bottom: var(--sp-8);
+    .page-head__eyebrow{
+      font-size:.72rem;
+      font-weight:500;
+      letter-spacing:.42em;
+      text-transform:uppercase;
+      color:var(--crimson-lit);
+      margin-bottom:1.6rem;
+      animation:rise .9s var(--ease) .05s both;
     }
 
-    /* ===== Footer ===== */
-    .footer { padding: 0 var(--sp-6) var(--sp-12); }
-    .footer-divider {
-      height: 1px;
-      max-width: var(--container);
-      margin: 0 auto var(--sp-8);
-      background: linear-gradient(90deg, transparent, var(--crimson) 50%, transparent);
-    }
-    .footer p {
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-      letter-spacing: 0.04em;
+    .page-head__eyebrow::before{
+      content:"";
+      display:inline-block;
+      width:6px; height:6px;
+      margin-inline-end:.9rem;
+      vertical-align:middle;
+      border-radius:var(--radius-pill);
+      background:var(--crimson-lit);
+      box-shadow:0 0 12px rgba(212,96,122,.8);
     }
 
-    /* ===== Reveal Animations ===== */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
-      transition-delay: var(--d, 0s);
+    .page-head__title{
+      font-size:clamp(2rem, 4.2vw, 3rem);
+      font-weight:300;
+      letter-spacing:-.02em;
+      line-height:1.15;
+      color:var(--ink);
+      margin-bottom:1.2rem;
+      animation:rise .9s var(--ease) .18s both;
     }
-    .reveal.in-view { opacity: 1; transform: none; }
 
-    /* ===== Responsive ===== */
-    @media (max-width: 860px) {
-      .grid { grid-template-columns: 1fr; gap: 32px; }
+    .page-head__subtitle{
+      font-size:1.02rem;
+      font-weight:400;
+      line-height:1.8;
+      color:var(--ink-muted);
+      max-width:52ch;
+      margin:0 auto;
+      animation:rise .9s var(--ease) .32s both;
     }
-    @media (max-width: 760px) {
-      .nav-toggle { display: flex; }
-      .nav-menu {
-        position: fixed;
-        top: var(--nav-h);
-        left: 0;
-        right: 0;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0;
-        background: rgba(10, 10, 10, 0.97);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border-bottom: 1px solid var(--line);
-        padding: var(--sp-4) var(--sp-6) var(--sp-6);
-        transform: translateY(-12px);
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), visibility 0s linear 0.3s;
+
+    /* ====== PROJECTS GRID ====== */
+    .projects{
+      padding:2.5rem 1.5rem 6.5rem;
+    }
+
+    .projects__inner{
+      max-width:64rem;
+      margin:0 auto;
+    }
+
+    .projects__grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:1.5rem;
+    }
+
+    .project{
+      display:flex;
+      flex-direction:column;
+      background:var(--card);
+      border:1px solid rgba(212,96,122,.22);
+      border-radius:var(--radius-panel);
+      padding:2.2rem 2rem;
+      transition:border-color var(--dur) var(--ease),
+                 box-shadow var(--dur) var(--ease),
+                 transform var(--dur) var(--ease);
+    }
+
+    .project:hover{
+      border-color:rgba(212,96,122,.5);
+      box-shadow:0 20px 50px -18px rgba(107,15,26,.6), 0 0 32px -8px rgba(107,15,26,.45);
+      transform:translateY(-3px);
+    }
+
+    /* Crimson number badge */
+    .project__badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:46px; height:46px;
+      margin-bottom:1.4rem;
+      border-radius:var(--radius-pill);
+      background:linear-gradient(135deg, var(--crimson-deep), var(--crimson));
+      border:1px solid rgba(212,96,122,.45);
+      box-shadow:0 8px 24px -10px rgba(107,15,26,.8), inset 0 0 14px rgba(107,15,26,.35);
+      font-size:.85rem;
+      font-weight:600;
+      letter-spacing:.08em;
+      color:var(--crimson-lit);
+    }
+
+    .project__title{
+      font-size:1.18rem;
+      font-weight:600;
+      letter-spacing:-.01em;
+      margin-bottom:.7rem;
+    }
+
+    .project__text{
+      font-size:.95rem;
+      line-height:1.75;
+      color:var(--ink-muted);
+      margin-bottom:1.5rem;
+    }
+
+    .project__tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+      margin-bottom:1.8rem;
+    }
+
+    .project__tag{
+      font-size:.72rem;
+      font-weight:500;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:var(--ink-muted);
+      padding:.32rem .85rem;
+      border:1px solid var(--hairline);
+      border-radius:var(--radius-pill);
+    }
+
+    .project__action{ margin-top:auto; }
+
+    /* Button — transparent with velvet crimson border; gold on hover/active only */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:.72rem 1.9rem;
+      border-radius:var(--radius-pill);
+      border:1px solid rgba(212,96,122,.45);
+      color:var(--ink);
+      font-size:.88rem;
+      font-weight:500;
+      letter-spacing:.02em;
+      text-decoration:none;
+      background:transparent;
+      cursor:pointer;
+      box-shadow:0 10px 40px -14px rgba(107,15,26,.6), inset 0 0 24px rgba(107,15,26,.14);
+      transition:background var(--dur) var(--ease),
+                 border-color var(--dur) var(--ease),
+                 color var(--dur) var(--ease),
+                 box-shadow var(--dur) var(--ease),
+                 transform var(--dur) var(--ease);
+    }
+
+    .btn:hover{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#0a0a0a;
+      box-shadow:0 12px 42px -12px rgba(184,134,11,.45);
+    }
+
+    .btn:active{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#0a0a0a;
+      transform:translateY(1px);
+    }
+
+    /* Scroll reveal */
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      transition:opacity .7s var(--ease), transform .7s var(--ease);
+    }
+
+    .reveal.is-visible{
+      opacity:1;
+      transform:none;
+    }
+
+    .reveal:nth-child(2){ transition-delay:.08s; }
+    .reveal:nth-child(3){ transition-delay:.16s; }
+    .reveal:nth-child(4){ transition-delay:.24s; }
+
+    /* ====== BOTTOM CTA ====== */
+    .cta{
+      position:relative;
+      overflow:hidden;
+      padding:7rem 1.5rem 8rem;
+      text-align:center;
+    }
+
+    .cta__glow{
+      position:absolute;
+      inset:auto -10% -30% -10%;
+      height:80%;
+      pointer-events:none;
+      background:radial-gradient(50rem 26rem at 50% 70%, rgba(107,15,26,.10), rgba(107,15,26,.04) 55%, transparent 80%);
+    }
+
+    .cta__inner{ position:relative; }
+
+    .cta__text{
+      font-size:clamp(1.6rem, 3.2vw, 2.2rem);
+      font-weight:300;
+      letter-spacing:-.02em;
+      margin-bottom:2.4rem;
+    }
+
+    /* Solid velvet crimson button — gold on hover/active only */
+    .btn--solid{
+      padding:.95rem 2.6rem;
+      font-size:.95rem;
+      background:linear-gradient(135deg, var(--crimson-deep), var(--crimson));
+      border:1px solid rgba(212,96,122,.45);
+      box-shadow:0 14px 44px -14px rgba(107,15,26,.75), inset 0 0 28px rgba(107,15,26,.3);
+    }
+
+    .btn--solid:hover{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#0a0a0a;
+      box-shadow:0 14px 44px -12px rgba(184,134,11,.5);
+    }
+
+    .btn--solid:active{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#0a0a0a;
+      transform:translateY(1px);
+    }
+
+    @keyframes rise{
+      from{ opacity:0; transform:translateY(18px); }
+      to{   opacity:1; transform:none; }
+    }
+
+    /* ====== FOOTER ====== */
+    .site-footer{
+      border-top:1px solid var(--hairline);
+      padding:1.75rem 1.5rem;
+      text-align:center;
+    }
+
+    .site-footer p{
+      font-size:.85rem;
+      font-weight:400;
+      color:var(--ink-muted);
+      letter-spacing:.02em;
+    }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width:768px){
+      .nav__toggle{ display:inline-flex; }
+
+      /* Frosted glass dropdown — smooth slide-down */
+      .nav__links{
+        position:fixed;
+        top:calc(var(--nav-h) + 8px);
+        left:1rem;
+        right:1rem;
+        flex-direction:column;
+        align-items:stretch;
+        gap:2px;
+        padding:.4rem;
+        border:1px solid var(--hairline);
+        border-radius:var(--radius-panel);
+        background:var(--frost);
+        -webkit-backdrop-filter:blur(18px);
+        backdrop-filter:blur(18px);
+        box-shadow:0 24px 60px -20px rgba(0,0,0,.85);
+        opacity:0;
+        transform:translateY(-12px);
+        visibility:hidden;
+        pointer-events:none;
+        transition:opacity .35s var(--ease),
+                   transform .35s var(--ease),
+                   visibility .35s var(--ease);
       }
-      .nav-menu.open {
-        transform: none;
-        opacity: 1;
-        visibility: visible;
-        transition-delay: 0s;
+
+      .nav__links.is-open{
+        opacity:1;
+        transform:translateY(0);
+        visibility:visible;
+        pointer-events:auto;
       }
-      .nav-menu a {
-        display: block;
-        font-size: 16px;
-        padding: 15px 2px;
-        border-bottom: 1px solid var(--line);
+
+      .nav__link{
+        display:block;
+        padding:.95rem 1.15rem;
+        border-radius:var(--radius-pill);
       }
-      .nav-menu li:last-child a { border-bottom: 0; }
-      .nav-menu a::after { bottom: 8px; right: auto; width: 32px; }
-      .hero { padding-top: calc(var(--nav-h) + 64px); }
-      .headline .hl { text-underline-offset: 10px; }
-      .card { padding: 44px 24px 28px; }
+
+      .nav__link:hover{ background:rgba(255,255,255,.04); }
+
+      .projects{ padding:1.5rem 1.25rem 5rem; }
+      .projects__grid{ grid-template-columns:1fr; gap:1rem; }
+      .cta{ padding:5rem 1.5rem 6rem; }
     }
 
-    /* ===== Reduced Motion ===== */
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .reveal { transition: none; opacity: 1; transform: none; }
-      .nav, .nav-menu, .nav-toggle span, .btn, .card { transition: none; }
+    /* ====== REDUCED MOTION ====== */
+    @media (prefers-reduced-motion: reduce){
+      html{ scroll-behavior:auto; }
+      *,*::before,*::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+      }
+      .page-head__eyebrow,
+      .page-head__title,
+      .page-head__subtitle{ animation:none; }
+      .reveal{
+        opacity:1;
+        transform:none;
+        transition-delay:0s !important;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="ambience" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
 
-  <!-- ===== NAVIGATION ===== -->
-  <header class="nav">
-    <nav class="nav-inner" aria-label="Main navigation">
-      <a class="logo" href="index.html">AliDev98<span class="dot">.</span></a>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-menu" id="nav-menu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a class="active" href="projects.html" aria-current="page">Projects</a></li>
+  <!-- ====== NAVIGATION ====== -->
+  <header class="site-header" id="siteHeader">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="index.html">AD</a>
+
+      <ul class="nav__links" id="navMenu">
+        <li><a class="nav__link" href="index.html">Home</a></li>
+        <li><a class="nav__link" href="about.html">About</a></li>
+        <li><a class="nav__link is-active" href="projects.html" aria-current="page">Projects</a></li>
       </ul>
+
+      <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+      </button>
     </nav>
   </header>
 
   <main>
-    <!-- ===== HERO ===== -->
-    <section class="hero">
-      <p class="eyebrow reveal">Portfolio</p>
-      <h1 class="headline reveal" style="--d: .12s"><span class="hl">My Recent Work</span></h1>
-      <p class="lede reveal" style="--d: .24s">A selection of projects I have built and designed.</p>
+
+    <!-- ====== HEADER SECTION ====== -->
+    <section class="page-head" aria-label="Portfolio introduction">
+      <div class="page-head__glow" aria-hidden="true"></div>
+
+      <div class="page-head__inner">
+        <p class="page-head__eyebrow">Portfolio</p>
+
+        <h1 class="page-head__title">My Recent Work</h1>
+
+        <p class="page-head__subtitle">A selection of projects I have built and designed.</p>
+      </div>
     </section>
 
-    <!-- ===== PROJECTS GRID ===== -->
+    <!-- ====== PROJECTS GRID ====== -->
     <section class="projects" aria-label="Projects">
-      <div class="container">
-        <div class="grid">
-          <article class="card reveal" style="--d: .05s">
-            <span class="badge">01</span>
-            <h2>Personal Portfolio</h2>
-            <p>A responsive, dark-themed portfolio built with HTML, CSS, and JavaScript.</p>
-            <ul class="tags">
-              <li>HTML</li><li>CSS</li><li>JS</li>
+      <div class="projects__inner">
+        <div class="projects__grid">
+
+          <article class="project reveal">
+            <span class="project__badge" aria-hidden="true">01</span>
+            <h2 class="project__title">Personal Portfolio</h2>
+            <p class="project__text">A responsive, dark-themed portfolio built with HTML, CSS, and JavaScript.</p>
+            <ul class="project__tags" aria-label="Technologies used">
+              <li class="project__tag">HTML</li>
+              <li class="project__tag">CSS</li>
+              <li class="project__tag">JS</li>
             </ul>
-            <a class="btn" href="#">View Project</a>
+            <div class="project__action">
+              <a class="btn" href="index.html">View Project</a>
+            </div>
           </article>
 
-          <article class="card reveal" style="--d: .15s">
-            <span class="badge">02</span>
-            <h2>Telegram Bot</h2>
-            <p>A custom Python bot for automating tasks and answering user queries.</p>
-            <ul class="tags">
-              <li>Python</li><li>API</li>
+          <article class="project reveal">
+            <span class="project__badge" aria-hidden="true">02</span>
+            <h2 class="project__title">Telegram Bot</h2>
+            <p class="project__text">A custom Python bot for automating tasks and answering user queries.</p>
+            <ul class="project__tags" aria-label="Technologies used">
+              <li class="project__tag">Python</li>
+              <li class="project__tag">API</li>
             </ul>
-            <a class="btn" href="#">View Project</a>
+            <div class="project__action">
+              <a class="btn" href="index.html">View Project</a>
+            </div>
           </article>
 
-          <article class="card reveal" style="--d: .25s">
-            <span class="badge">03</span>
-            <h2>AI Image Generator</h2>
-            <p>A web tool that generates high-quality images using AI models.</p>
-            <ul class="tags">
-              <li>AI</li><li>Web</li>
+          <article class="project reveal">
+            <span class="project__badge" aria-hidden="true">03</span>
+            <h2 class="project__title">AI Image Generator</h2>
+            <p class="project__text">A web tool that generates high-quality images using AI models.</p>
+            <ul class="project__tags" aria-label="Technologies used">
+              <li class="project__tag">AI</li>
+              <li class="project__tag">Web</li>
             </ul>
-            <a class="btn" href="#">View Project</a>
+            <div class="project__action">
+              <a class="btn" href="index.html">View Project</a>
+            </div>
           </article>
 
-          <article class="card reveal" style="--d: .35s">
-            <span class="badge">04</span>
-            <h2>Automation Script</h2>
-            <p>A Python script that automates repetitive web tasks and data entry.</p>
-            <ul class="tags">
-              <li>Python</li><li>Automation</li>
+          <article class="project reveal">
+            <span class="project__badge" aria-hidden="true">04</span>
+            <h2 class="project__title">Automation Script</h2>
+            <p class="project__text">A Python script that automates repetitive web tasks and data entry.</p>
+            <ul class="project__tags" aria-label="Technologies used">
+              <li class="project__tag">Python</li>
+              <li class="project__tag">Automation</li>
             </ul>
-            <a class="btn" href="#">View Project</a>
+            <div class="project__action">
+              <a class="btn" href="index.html">View Project</a>
+            </div>
           </article>
+
         </div>
       </div>
     </section>
 
-    <!-- ===== CTA ===== -->
-    <section class="cta">
-      <h2 class="reveal">Want to see more or work together?</h2>
-      <a class="btn btn-lg reveal" style="--d: .15s" href="mailto:your-email@example.com">Get in Touch</a>
+    <!-- ====== BOTTOM CTA ====== -->
+    <section class="cta" aria-label="Contact">
+      <div class="cta__glow" aria-hidden="true"></div>
+
+      <div class="cta__inner">
+        <h2 class="cta__text">Want to see more or work together?</h2>
+        <a class="btn btn--solid" href="mailto:your-email@example.com">Get in Touch</a>
+      </div>
     </section>
+
   </main>
 
-  <!-- ===== FOOTER ===== -->
-  <footer class="footer">
-    <div class="footer-divider" aria-hidden="true"></div>
-    <p>© 2026 AliDev98. All rights reserved.</p>
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <p>&copy; 2026 AliDev98. All rights reserved.</p>
   </footer>
 
+  <!-- ====== SCRIPT ====== -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      /* Nav: scrolled state */
-      const nav = document.querySelector('.nav');
-      const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 10);
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
+    (function(){
+      var header = document.getElementById('siteHeader');
+      var toggle = document.getElementById('navToggle');
+      var menu   = document.getElementById('navMenu');
+      var mq     = window.matchMedia('(min-width: 769px)');
 
-      /* Mobile menu toggle */
-      const toggle = document.querySelector('.nav-toggle');
-      const menu = document.getElementById('nav-menu');
-      const closeMenu = () => {
-        menu.classList.remove('open');
-        toggle.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-      };
-      toggle.addEventListener('click', () => {
-        const open = menu.classList.toggle('open');
-        toggle.classList.toggle('open', open);
+      function setMenu(open){
+        menu.classList.toggle('is-open', open);
+        toggle.classList.toggle('is-open', open);
         toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      }
+
+      toggle.addEventListener('click', function(){
+        setMenu(!menu.classList.contains('is-open'));
       });
-      menu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && menu.classList.contains('open')) {
-          closeMenu();
+
+      menu.querySelectorAll('a').forEach(function(link){
+        link.addEventListener('click', function(){ setMenu(false); });
+      });
+
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape' && menu.classList.contains('is-open')){
+          setMenu(false);
           toggle.focus();
         }
       });
 
-      /* Placeholder project links */
-      document.querySelectorAll('a[href="#"]').forEach(link => {
-        link.addEventListener('click', e => e.preventDefault());
+      mq.addEventListener('change', function(e){
+        if(e.matches) setMenu(false);
       });
 
-      /* Staggered reveal on load / scroll */
-      const items = document.querySelectorAll('.reveal');
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduced || !('IntersectionObserver' in window)) {
-        items.forEach(item => item.classList.add('in-view'));
+      /* Frosted nav background once the page scrolls */
+      var ticking = false;
+      function onScroll(){
+        if(!ticking){
+          requestAnimationFrame(function(){
+            header.classList.toggle('is-scrolled', window.scrollY > 8);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive:true });
+      onScroll();
+
+      /* Scroll reveal for project cards (respects reduced motion) */
+      var reveals = document.querySelectorAll('.reveal');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if(reduceMotion || !('IntersectionObserver' in window)){
+        reveals.forEach(function(el){ el.classList.add('is-visible'); });
       } else {
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('in-view');
-              io.unobserve(entry.target);
+        var observer = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if(entry.isIntersecting){
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
             }
           });
-        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-        items.forEach(item => io.observe(item));
+        }, { threshold:.15 });
+
+        reveals.forEach(function(el){ observer.observe(el); });
       }
-    });
+    })();
   </script>
+
 </body>
 </html>
