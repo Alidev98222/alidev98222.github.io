@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="About AliDev98 — a web developer passionate about clean code, responsive layouts, performance and accessibility.">
+  <meta name="description" content="About AliDev98 â€” a web developer passionate about clean code, responsive layouts, performance and accessibility.">
   <meta name="theme-color" content="#0a0a0a">
-  <title>About — AliDev98.</title>
+  <title>About â€” AliDev98.</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,7 +107,7 @@
     .nav__links{
       display:flex;
       align-items:center;
-      gap:2.75rem;
+      gap:2.5rem;
     }
 
     .nav__link{
@@ -137,7 +137,7 @@
       box-shadow:0 0 10px rgba(212,96,122,.7);
     }
 
-    /* Hamburger — three lines */
+    /* Hamburger â€” three lines */
     .nav__toggle{
       display:none;
       flex-direction:column;
@@ -179,7 +179,7 @@
       padding:calc(var(--nav-h) + 5.5rem) 1.5rem 5.5rem;
     }
 
-    /* Soft velvet crimson glow — diffused and feathered, no visible ring edges */
+    /* Soft velvet crimson glow â€” diffused and feathered, no visible ring edges */
     .hero__glow{
       position:absolute;
       inset:-15% -10% auto;
@@ -234,7 +234,7 @@
       animation:rise .9s var(--ease) .32s both;
     }
 
-    /* Button — transparent with velvet crimson border; gold on hover/active only */
+    /* Button â€” transparent with velvet crimson border; gold on hover/active only */
     .btn{
       display:inline-flex;
       align-items:center;
@@ -323,7 +323,7 @@
       margin-bottom:.85rem;
     }
 
-    /* Crimson-dot motif — echo of the brand dot on each card */
+    /* Crimson-dot motif â€” echo of the brand dot on each card */
     .card__title::before{
       content:"";
       flex:none;
@@ -376,7 +376,7 @@
       margin-bottom:2.4rem;
     }
 
-    /* Solid velvet crimson button — gold on hover/active only */
+    /* Solid velvet crimson button â€” gold on hover/active only */
     .btn--solid{
       background:linear-gradient(135deg, var(--crimson-deep), var(--crimson));
       border:1px solid rgba(212,96,122,.45);
@@ -420,7 +420,7 @@
     @media (max-width:768px){
       .nav__toggle{ display:inline-flex; }
 
-      /* Frosted glass dropdown — smooth slide-down */
+      /* Frosted glass dropdown â€” smooth slide-down */
       .nav__links{
         position:fixed;
         top:calc(var(--nav-h) + 8px);
@@ -498,6 +498,7 @@
         <li><a class="nav__link" href="index.html">Home</a></li>
         <li><a class="nav__link is-active" href="about.html" aria-current="page">About</a></li>
         <li><a class="nav__link" href="projects.html">Projects</a></li>
+        <li><a class="nav__link" href="contact.html">Contact</a></li>
       </ul>
 
       <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
